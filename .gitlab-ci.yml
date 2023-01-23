@@ -1,0 +1,119 @@
+image: node:16.15
+cache: &global_cache
+  key: ${CI_COMMIT_REF_SLUG}
+  paths:
+    - node_modules/
+    - .yarn/
+  policy: pull
+
+.utils:
+  install_deps:
+    - export GITLAB_DEPLOY_TOKEN=$CI_JOB_TOKEN
+    # We have to set fake values to these variables, even though we disable
+    # the network settings below, because Yarn validates the .yarnrc.yml when
+    # we disable them. Without these variables, the validation will fail.
+    # - export GITLAB_CERT_PATH=1
+    # - export GITLAB_KEY_PATH=2
+
+    # We could disable network settings if in GitLab we don't need the certificate to access the registry;
+    # - yarn config unset networkSettings
+    - yarn install --immutable
+  unset_yarn_keys:
+    - export GITLAB_DEPLOY_TOKEN=$CI_JOB_TOKEN
+    - export GITLAB_CERT_PATH=1
+    - export GITLAB_KEY_PATH=2
+    - yarn config unset networkSettings
+
+stages:
+  - build
+  - test
+  - component-tests
+  - release
+
+build:
+  stage: build
+  before_script:
+    - !reference ['.utils', install_deps]
+  script:
+    - yarn build
+  cache:
+    <<: *global_cache
+    policy: push
+
+eslint:
+  before_script:
+    - !reference ['.utils', unset_yarn_keys]
+  stage: test
+  script: 'yarn lint:check'
+
+stylelint:
+  before_script:
+    - !reference ['.utils', unset_yarn_keys]
+  stage: test
+  script: 'yarn stylelint:check'
+
+unit-coverage:
+  before_script:
+    - !reference ['.utils', unset_yarn_keys]
+  stage: test
+  coverage: /All files[^|]*\|[^|]*\s+([\d\.]+)/
+  script: yarn coverage:check
+  artifacts:
+    when: always
+    reports:
+      junit: junit.xml
+      coverage_report:
+        coverage_format: cobertura
+        path: coverage/cobertura-coverage.xml
+
+typescipt:
+  before_script:
+    - !reference ['.utils', unset_yarn_keys]
+  stage: test
+  script: 'yarn ts:check'
+
+prettier:
+  before_script:
+    - !reference ['.utils', unset_yarn_keys]
+  stage: test
+  script: 'yarn prettier:check'
+
+component-tests:
+  before_script:
+    - !reference ['.utils', unset_yarn_keys]
+  timeout: 20 minutes
+  stage: component-tests
+  image: mcr.microsoft.com/playwright:bionic
+  parallel: 2
+  script:
+    - yarn prepareComponentTest
+    - yarn playwright:ci
+  artifacts:
+    paths:
+      - results.xml
+    reports:
+      junit: results.xml
+  allow_failure: true
+
+publish:
+  stage: release
+  before_script:
+    - !reference ['.utils', install_deps]
+    - |
+      {
+        echo "@${CI_PROJECT_ROOT_NAMESPACE}:registry=${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/packages/npm/"
+        echo "${CI_API_V4_URL#https?}/projects/${CI_PROJECT_ID}/packages/npm/:_authToken=${CI_JOB_TOKEN}"
+      } | tee --append .npmrc
+  script:
+    - yarn build
+    - ls -la
+    - npm publish
+  when: manual
+
+license_scanning:
+  before_script:
+    - export GITLAB_DEPLOY_TOKEN=$CI_JOB_TOKEN
+    - export GITLAB_CERT_PATH=1
+    - export GITLAB_KEY_PATH=2
+  variables:
+    ASDF_NODEJS_VERSION: 16.15.0

@@ -1,0 +1,35 @@
+module.exports = {
+  reporters: ['default', 'jest-junit'],
+  testEnvironment: 'jsdom',
+  verbose: true,
+  testMatch: ['**/?(*.)+(test|snap).[jt]s?(x)', '!**/__tests__/**'],
+  coverageReporters: ['html', 'text', 'text-summary', 'cobertura'],
+  moduleNameMapper: {
+    '\\.(css|scss)$': 'identity-obj-proxy',
+    '\\.(svg|png|jpg|jpeg)$': '<rootDir>/src/shared/mocks/fileMock.ts',
+    '^1.app/(.*)': '<rootDir>/src/1.app/$1',
+    '^2.pages/(.*)': '<rootDir>/src/2.pages/$1',
+    '^3.entities/(.*)': '<rootDir>/src/3.entities/$1',
+    '^4.components/(.*)': '<rootDir>/src/4.components/$1',
+    '^5.stores/(.*)': '<rootDir>/src/5.stores/$1',
+    '^6.shared/(.*)': '<rootDir>/src/6.shared/$1',
+  },
+  setupFiles: ['<rootDir>/src/shared/jest/globals.ts'],
+  coveragePathIgnorePatterns: ['/node_modules/', '/dist', '/__tests__'],
+  coverageThreshold: {
+    global: {
+      statements: 0,
+      branches: 0,
+      functions: 0,
+      lines: 0,
+    },
+  },
+  collectCoverageFrom: [
+    'src/**/*.ts?x',
+    '!**/node_modules/**',
+    '!src/!**!/!*.d.ts',
+    '!**/dist/**',
+    '!**/devDist/**',
+    '!**!/__stories__/!**',
+  ],
+}
