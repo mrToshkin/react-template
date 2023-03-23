@@ -6,7 +6,7 @@
     [
       "@semantic-release/gitlab",
       {
-        "gitlabUrl": "https://git.sbereducation.site",
+        "gitlabUrl": "https://git",
         "gitlabApiPathPrefix": "/api/v4",
         "verifyConditions": []
       }
