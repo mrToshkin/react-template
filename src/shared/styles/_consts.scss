@@ -1,0 +1,16 @@
+@use '_colors' as *;
+
+$bp-mobile: 390px;
+$bp-tablet: 768px;
+$bp-desktop: 1024px;
+$bp-desktop-lg: 1200px;
+$border-1px: 1px solid $control-secondary;
+$border-2px: 2px solid $control-secondary;
+$rounding-m: 4px;
+$rounding-l: 8px;
+$rounding-xl: 16px;
+$transition: 150ms;
+$menu-width-open: 200px;
+$menu-width-closed: 60px;
+$menu-mobile-height: 44px;
+$drawer-width-open: 377px;

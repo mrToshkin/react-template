@@ -1,25 +1,19 @@
 module.exports = {
   overrides: [
     {
-      files: ["src/**/*.css", "src/**/*.scss"],
-      customSyntax: require("postcss-scss"),
-      extends: ["stylelint-config-standard"],
-      plugins: ["stylelint-scss"],
-      ignoreFiles: ["./node_modules/**/*", "**/*.html"],
+      files: ['src/**/*.css', 'src/**/*.scss'],
+      extends: ['stylelint-config-standard', 'stylelint-config-standard-scss'],
+      plugins: ['stylelint-scss'],
+      ignoreFiles: ['node_modules/**/*', '**/*.html', '**/dist/**/*'],
       reportNeedlessDisables: true,
       rules: {
-        "declaration-block-trailing-semicolon": "always",
-        "no-descending-specificity": null,
-        "selector-class-pattern": ".",
-        "scss/at-rule-no-unknown": true,
-        "at-rule-no-unknown": null,
-        "selector-pseudo-class-no-unknown": [
-          true,
-          {
-            "ignorePseudoClasses": ["global"]
-          }
-        ]
-      }
-    }
-  ]
+        'no-descending-specificity': null,
+        'selector-class-pattern': '.',
+        'scss/at-rule-no-unknown': true,
+        'at-rule-no-unknown': null,
+        'selector-pseudo-class-no-unknown': [true, { ignorePseudoClasses: ['global'] }],
+        'scss/load-no-partial-leading-underscore': null,
+      },
+    },
+  ],
 };

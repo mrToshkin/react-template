@@ -1,0 +1,88 @@
+/* Класс, скрывающий элемент визуально, но оставляющий доступным для скрин-ридеров */
+.sr-only {
+  clip: rect(0 0 0 0);
+  clip-path: inset(50%);
+  height: 1px;
+  overflow: hidden;
+  position: absolute;
+  white-space: nowrap;
+  width: 1px;
+}
+
+.pre-line {
+  white-space: pre-line;
+}
+
+.ellipsis {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* atomic */
+@for $i from 1 through 3 {
+  .p-#{$i * 4} {
+    padding: #{$i * 4}px;
+  }
+}
+
+.relative {
+  position: relative;
+}
+
+.fit-content {
+  width: fit-content;
+}
+
+.z-2 {
+  z-index: 2;
+}
+
+.ml-auto {
+  margin-left: auto;
+}
+
+.mr-auto {
+  margin-right: auto;
+}
+
+.flex {
+  display: flex;
+}
+
+@for $i from 0 through 8 {
+  .flex-#{$i * 4} {
+    display: flex;
+    gap: #{$i * 4}px;
+  }
+
+  .flex-col-#{$i * 4} {
+    display: flex;
+    gap: #{$i * 4}px;
+    flex-direction: column;
+  }
+}
+
+.justify-between {
+  justify-content: space-between;
+}
+
+.justify-around {
+  justify-content: space-around;
+}
+
+.center {
+  align-items: center;
+}
+
+.wrap {
+  flex-wrap: wrap;
+}
+
+.align-self-start {
+  align-self: flex-start;
+}
+
+.align-self-end {
+  align-self: flex-end;
+}

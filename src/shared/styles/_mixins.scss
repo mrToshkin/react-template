@@ -1,0 +1,52 @@
+@use '_consts' as *;
+
+/* desktop first */
+@mixin desktop-lg {
+  @media (width < calc($bp-desktop-lg)) {
+    @content;
+  }
+}
+
+@mixin desktop {
+  @media (width < calc($bp-desktop)) {
+    @content;
+  }
+}
+
+@mixin tablet {
+  @media (width < calc($bp-tablet)) {
+    @content;
+  }
+}
+
+@mixin mobile {
+  @media (width < calc($bp-mobile)) {
+    @content;
+  }
+}
+
+@mixin skeleton-animation {
+  background-image: linear-gradient(to right,
+      rgb(230 230 230 / 40%) 8%,
+      rgb(255 255 255 / 40%) 18%,
+      rgb(230 230 230 / 40%) 33%);
+  background-size: 100vw;
+  animation: skeleton-loading 1.5s infinite linear;
+}
+
+@keyframes skeleton-loading {
+  0% {
+    background-position: -30vw;
+  }
+
+  40%,
+  100% {
+    background-position: 70vw;
+  }
+}
+
+@mixin ellipsis {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}

@@ -5,3 +5,5 @@ src/**/*/schema.generated.ts
 node_modules
 package.json
 .yarn
+.helm
+.git
