@@ -11,6 +11,7 @@ import simpleImportSortPlugin from 'eslint-plugin-simple-import-sort';
 // @ts-expect-error Package does not ship TypeScript declarations.
 import * as importPlugin from 'eslint-plugin-import';
 import prettierPluginRecommended from 'eslint-plugin-prettier/recommended';
+import boundaries from 'eslint-plugin-boundaries';
 
 const isCi = process.env.NODE_ENV === 'ci';
 
@@ -25,6 +26,36 @@ const ignores = [
 
 const config: Linter.Config[] = [
   prettierPluginRecommended,
+  {
+    files: ['src/**/*.ts', 'src/**/*.tsx'],
+    plugins: { boundaries },
+    settings: {
+      'boundaries/elements': [
+        { type: 'app', pattern: ['src/app/**/*'] },
+        { type: 'pages', pattern: ['src/pages/**/*'] },
+        { type: 'widgets', pattern: ['src/widgets/**/*'] },
+        { type: 'features', pattern: ['src/features/**/*'] },
+        { type: 'entities', pattern: ['src/entities/**/*'] },
+        { type: 'shared', pattern: ['src/shared/**/*'] },
+      ],
+    },
+    rules: {
+      'boundaries/dependencies': [
+        'error',
+        {
+          default: 'disallow',
+          rules: [
+            { from: 'app', allow: ['app', 'pages', 'widgets', 'features', 'entities', 'shared'] },
+            { from: 'pages', allow: ['pages', 'widgets', 'features', 'entities', 'shared'] },
+            { from: 'widgets', allow: ['widgets', 'features', 'entities', 'shared'] },
+            { from: 'features', allow: ['features', 'entities', 'shared'] },
+            { from: 'entities', allow: ['entities', 'shared'] },
+            { from: 'shared', allow: ['shared'] },
+          ],
+        },
+      ],
+    },
+  },
   {
     ignores,
     linterOptions: {
@@ -70,9 +101,15 @@ const config: Linter.Config[] = [
           groups: [
             ['^react', '^@?\\w'],
             ['^\\u0000'],
+            ['^@app/'],
+            ['^@pages/'],
+            ['^@widgets/'],
+            ['^@features/'],
+            ['^@entities/'],
+            ['^@shared/'],
             ['^\\.\\.(?!/?$)', '^\\.\\./?$'],
             ['^\\./(?=.*/)(?!/?$)', '^\\.(?!/?$)', '^\\./?$'],
-            ['^.+\\.?(css)$'],
+            ['^.+\\.?(css|scss)$'],
           ],
         },
       ],

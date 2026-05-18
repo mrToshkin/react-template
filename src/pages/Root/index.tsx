@@ -1,5 +1,6 @@
 import { type ReactElement } from 'react';
 import { Outlet } from 'react-router-dom';
+
 import { Nav } from '@widgets/Nav';
 
 import styles from './styles.module.scss';

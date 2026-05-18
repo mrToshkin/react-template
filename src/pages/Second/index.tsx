@@ -1,4 +1,5 @@
 import { type ReactElement } from 'react';
+
 import { IconReact, ImgReact } from '@shared/assets';
 
 import styles from './styles.module.scss';
