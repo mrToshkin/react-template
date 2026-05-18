@@ -2,10 +2,13 @@ import { Linter } from 'eslint';
 import * as typescriptPlugin from '@typescript-eslint/eslint-plugin';
 import typescriptParser from '@typescript-eslint/parser';
 import reactPlugin from 'eslint-plugin-react';
+// @ts-expect-error Package does not ship TypeScript declarations.
 import reactHooksPlugin from 'eslint-plugin-react-hooks';
 import reactRefreshPlugin from 'eslint-plugin-react-refresh';
 import unusedImportsPlugin from 'eslint-plugin-unused-imports';
+// @ts-expect-error Package does not ship TypeScript declarations.
 import simpleImportSortPlugin from 'eslint-plugin-simple-import-sort';
+// @ts-expect-error Package does not ship TypeScript declarations.
 import * as importPlugin from 'eslint-plugin-import';
 import prettierPluginRecommended from 'eslint-plugin-prettier/recommended';
 

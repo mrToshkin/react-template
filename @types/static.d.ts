@@ -24,3 +24,7 @@ declare module '*.jpg' {
   const value: string;
   export default value;
 }
+
+declare module 'eslint-plugin-react-hooks';
+declare module 'eslint-plugin-simple-import-sort';
+declare module 'eslint-plugin-import';
